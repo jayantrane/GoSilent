@@ -6,6 +6,7 @@ package com.fourstars.gosilent.gosilent;
 
 
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -14,11 +15,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 
 public class MyLocationDemoActivity extends AppCompatActivity
@@ -31,9 +36,9 @@ public class MyLocationDemoActivity extends AppCompatActivity
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     private boolean mPermissionDenied = false;
+    private LatLng myhome;
+    private FusedLocationProviderClient mFusedLocationClient;
 
-
-    //private FusedLocationProviderClient mFusedLocationClient;
 
     private GoogleMap mMap;
 
@@ -46,7 +51,7 @@ public class MyLocationDemoActivity extends AppCompatActivity
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-     //   mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
     }
 
     @Override
@@ -67,6 +72,22 @@ public class MyLocationDemoActivity extends AppCompatActivity
                     android.Manifest.permission.ACCESS_FINE_LOCATION, true);
         } else if (mMap != null) {
             // Access to the location has been granted to the app.
+
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+            mFusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+
+                            myhome = new  LatLng(location.getLatitude(), location.getLongitude());
+
+
+                            if (location != null) {
+                                // ...
+                            }
+                        }
+                    });
             Log.e("msg","Permission is granted . good to go");
             mMap.setMyLocationEnabled(true);
         }
@@ -75,10 +96,9 @@ public class MyLocationDemoActivity extends AppCompatActivity
     @Override
     public boolean onMyLocationButtonClick() {
         Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-        // Return false so that we don't consume the event and the default behavior still occurs
-        // (the camera animates to the user's current position).
 
-
+        mMap.addMarker(new MarkerOptions().position(myhome).title("My House"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(myhome));
 
         return false;
     }
