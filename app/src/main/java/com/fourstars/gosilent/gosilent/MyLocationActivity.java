@@ -5,14 +5,10 @@ package com.fourstars.gosilent.gosilent;
  */
 
 
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -26,7 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 
-public class MyLocationDemoActivity extends AppCompatActivity
+public class MyLocationActivity extends AppCompatActivity
         implements
         GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnCameraIdleListener,
@@ -45,7 +41,7 @@ public class MyLocationDemoActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_mylocation);
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -61,66 +57,42 @@ public class MyLocationDemoActivity extends AppCompatActivity
         mMap.setOnMapLongClickListener(this);
         mMap.setOnCameraIdleListener(this);
         mMap.setOnMyLocationButtonClickListener(this);
-        enableMyLocation();
-    }
+      //  enableMyLocation();
 
-    private void enableMyLocation() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission to access the location is missing.
-            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
-                    android.Manifest.permission.ACCESS_FINE_LOCATION, true);
-        } else if (mMap != null) {
-            // Access to the location has been granted to the app.
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
 
-            mFusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-
-                            myhome = new  LatLng(location.getLatitude(), location.getLongitude());
+                        myhome = new LatLng(location.getLatitude(), location.getLongitude());
 
 
-                            if (location != null) {
-                                // ...
-                            }
+                        if (location != null) {
+                            // ...
                         }
-                    });
-            Log.e("msg","Permission is granted . good to go");
-            mMap.setMyLocationEnabled(true);
-        }
+                    }
+                });
+        mMap.setMyLocationEnabled(true);
     }
+
+
 
     @Override
     public boolean onMyLocationButtonClick() {
         Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
 
         mMap.addMarker(new MarkerOptions().position(myhome).title("My House"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(myhome));
+        float zoomLevel = 16.0f; //This goes up to 21
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myhome, zoomLevel));
+       // mMap.moveCamera(CameraUpdateFactory.newLatLng(myhome));
 
         return false;
     }
 
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
-            return;
-        }
 
-        if (PermissionUtils.isPermissionGranted(permissions, grantResults,
-                android.Manifest.permission.ACCESS_FINE_LOCATION)) {
-            // Enable the my location layer if the permission has been granted.
-            enableMyLocation();
-        } else {
-            // Display the missing permission error dialog when the fragments resume.
-            Log.e("msg","Permission is denied");
-            mPermissionDenied = true;
-        }
-    }
 
     @Override
     protected void onResumeFragments() {

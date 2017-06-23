@@ -2,10 +2,13 @@ package com.fourstars.gosilent.gosilent;
 
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,6 +23,8 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -27,10 +32,17 @@ import com.google.android.gms.tasks.Task;
 public class MainActivity extends AppCompatActivity {
 
     private Button mbutton;
+    private Button mbutton2;
     private TextView mtextView;
     private FusedLocationProviderClient mFusedLocationClient;
     public int REQUEST_CHECK_SETTINGS =1;
     LocationRequest mLocationRequest;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+
+    private boolean mPermissionDenied = false;
+    private LatLng myhome;
+
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,28 +50,44 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mbutton = (Button) findViewById(R.id.button);
+        mbutton2 = (Button) findViewById(R.id.button2);
         mtextView = (TextView) findViewById(R.id.textView);
+
+        enableMyLocation();
 
         mbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, MyLocationDemoActivity.class);
+                Intent intent = new Intent(MainActivity.this, MyLocationActivity.class);
                 startActivity(intent);
             }
         });
 
-       // mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-       /* mFusedLocationClient.getLastLocation()
+        mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
                         mtextView.setText("Lat : " + location.getLatitude() + " Lng : " + location.getLongitude());
+
+                        LatLng temp= new LatLng(location.getLatitude(), location.getLongitude());
+
+                        ((MyApplication) MainActivity.this.getApplication()).setMyLocation(temp);
+
                         if (location != null) {
                             // ...
                         }
                     }
-                });*/
+                });
+
+        mbutton2.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, PolygonActivity.class);
+                startActivity(intent);
+            }
+        });
 
         createLocationRequest();
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest);
@@ -113,6 +141,37 @@ public class MainActivity extends AppCompatActivity {
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
+    private void enableMyLocation() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission to access the location is missing.
+            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION, true);
+        } else if (mMap != null) {
+            // Access to the location has been granted to the app.
 
+
+            Log.e("msg","Permission is granted . good to go");
+          //  mMap.setMyLocationEnabled(true);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
+            return;
+        }
+
+        if (PermissionUtils.isPermissionGranted(permissions, grantResults,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+            // Enable the my location layer if the permission has been granted.
+            enableMyLocation();
+        } else {
+            // Display the missing permission error dialog when the fragments resume.
+            Log.e("msg","Permission is denied");
+            mPermissionDenied = true;
+        }
+    }
 
 }
