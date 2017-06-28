@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fourstars.gosilent.gosilent">
 
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -37,8 +37,13 @@
         </activity>
 
         <activity
-            android:name=".PolygonActivity"
-            android:label="Maps">
+        android:name=".PolygonActivity"
+        android:label="Maps">
+
+        </activity>
+        <activity
+            android:name=".LocationBoxListActivity"
+            android:label="Location Box">
 
         </activity>
     </application>
