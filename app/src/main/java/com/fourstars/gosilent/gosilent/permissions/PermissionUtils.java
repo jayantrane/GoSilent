@@ -1,4 +1,4 @@
-package com.fourstars.gosilent.gosilent;
+package com.fourstars.gosilent.gosilent.permissions;
 
 /**
  * Created by Jayant on 22-06-2017.
@@ -14,6 +14,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
+
+import com.fourstars.gosilent.gosilent.R;
 
 
 public abstract class PermissionUtils {

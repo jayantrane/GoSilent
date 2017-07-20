@@ -1,4 +1,4 @@
-package com.fourstars.gosilent.gosilent;
+package com.fourstars.gosilent.gosilent.backup;
 
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.Manifest;
+
+import com.fourstars.gosilent.gosilent.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

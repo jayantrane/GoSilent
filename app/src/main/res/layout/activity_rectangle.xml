@@ -3,10 +3,24 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment
-        android:id="@+id/map"
-        class="com.google.android.gms.maps.SupportMapFragment"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <fragment
+            android:id="@+id/map"
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:text="Set Properties"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/button6"
+            android:visibility="invisible" />
+    </RelativeLayout>
 
 </LinearLayout>

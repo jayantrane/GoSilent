@@ -1,27 +1,27 @@
-package com.fourstars.gosilent.gosilent;
+package com.fourstars.gosilent.gosilent.activities;
 
 import android.content.Context;
-import android.location.Location;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.fourstars.gosilent.gosilent.databaseanddao.DatabaseHandler;
+import com.fourstars.gosilent.gosilent.databaseanddao.LocationBox;
+import com.fourstars.gosilent.gosilent.databaseanddao.MyApplication;
+import com.fourstars.gosilent.gosilent.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.Dash;
-import com.google.android.gms.maps.model.Dot;
-import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.File;
 import java.util.Arrays;
@@ -35,6 +35,9 @@ public class PolygonActivity extends AppCompatActivity
 
     private /*static final*/ LatLng mLocation /*= new LatLng(-20, 130)*/;
     private LatLng[] myBox;
+
+    private Button mbutton6;
+    private boolean buttonvisible=false;
 
     private int count=0;
 
@@ -65,17 +68,19 @@ public class PolygonActivity extends AppCompatActivity
 
         databaseHandler =new DatabaseHandler(this);
 
-        context=getApplicationContext();
-        Log.e("msg",context.toString());
+        mbutton6 = (Button)findViewById(R.id.button6);
+
+        mbutton6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PolygonActivity.this,SetLocationBoxProps.class);
+
+                startActivity(intent);
+            }
+        });
 
 
-        context=getBaseContext();
-        Log.e("msg",context.toString());
 
-
-        if(!filecreated) {
-            file = new File(context.getFilesDir(), "LocationData");
-        }
 
 /*        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -107,12 +112,14 @@ public class PolygonActivity extends AppCompatActivity
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setMyLocationEnabled(true);
       //  drawRectangle(map);
+/*
         Log.e("reading","Reading in on map ready");
         List<LocationBox> listlocationBox=databaseHandler.findAll();
         for(LocationBox b:listlocationBox){
             Log.e("data", "ID :"+b.getId()+" | Name :"+b.getName()+" | Point1 :"+b.getPoint1()
                     +" | Point2 :"+b.getPoint2()+" | Point3 :"+b.getPoint3()+" | Point4 :"+b.getPoint4());
         }
+*/
 
 
         map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
@@ -128,21 +135,27 @@ public class PolygonActivity extends AppCompatActivity
                     Log.e("msg","All points are Set.");
                     drawBox(map);
 
-                    Log.e("insert", "Insertion Initiated");
                     mLocationBox = new LocationBox();
-                //    mLocationBox.setId(3);
-                    mLocationBox.setName("1.Location Box");
                     mLocationBox.setPoint1(myBox[0].latitude+","+myBox[0].longitude);
                     mLocationBox.setPoint2(myBox[1].latitude+","+myBox[1].longitude);
                     mLocationBox.setPoint3(myBox[2].latitude+","+myBox[2].longitude);
                     mLocationBox.setPoint4(myBox[3].latitude+","+myBox[3].longitude);
-                    databaseHandler.save(mLocationBox);
-                    Log.e("insert","Insertion Completed");
 
-                    Log.e("reading","Reading in MapLongClick Listener");
+                    buttonvisible=true;
+                    ((MyApplication)PolygonActivity.this.getApplication()).setMyLocationBox(mLocationBox);
+                    if(buttonvisible){
+                        mbutton6.setVisibility(View.VISIBLE);
+                    }
+
+                    /*Log.e("reading","Reading in MapLongClick Listener");
                     LocationBox b=databaseHandler.findOne(databaseHandler.getIdCount());
                     Log.e("data", "ID :"+b.getId()+" | Name :"+b.getName()+" | Point1 :"+b.getPoint1()
                             +" | Point2 :"+b.getPoint2()+" | Point3 :"+b.getPoint3()+" | Point4 :"+b.getPoint4());
+*/
+/*                    LocationChecker locationChecker = new LocationChecker(b,mLocation);
+                    locationChecker.checkif();*/
+
+
                 }
             }
         });
@@ -150,6 +163,7 @@ public class PolygonActivity extends AppCompatActivity
 
 
     }
+
 
     public void drawBox(GoogleMap map){
         Log.e("msg","Draw Box has been called");

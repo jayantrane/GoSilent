@@ -1,4 +1,4 @@
-package com.fourstars.gosilent.gosilent;
+package com.fourstars.gosilent.gosilent.databaseanddao;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -26,6 +26,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_POINT2 = "point2";
     private static final String KEY_POINT3 = "point3";
     private static final String KEY_POINT4 = "point4";
+    private static final String KEY_MODE = "mode";
+    private static final String KEY_STATUS = "status";
 
     public DatabaseHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -35,7 +37,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String CREATE_LOCATIONBOX_TABLE = "CREATE TABLE " + TABLE_LOCATIONBOX + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_NAME + " TEXT," + KEY_POINT1 + " TEXT,"
-                + KEY_POINT2 + " TEXT," + KEY_POINT3 + " TEXT,"+ KEY_POINT4 + " TEXT"+ ")";
+                + KEY_POINT2 + " TEXT," + KEY_POINT3 + " TEXT,"+ KEY_POINT4 + " TEXT,"+ KEY_MODE + " TEXT,"+ KEY_STATUS + " TEXT"+ ")";
         sqLiteDatabase.execSQL(CREATE_LOCATIONBOX_TABLE);
 
     }
@@ -54,6 +56,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_POINT2, locationBox.getPoint2());
         values.put(KEY_POINT3, locationBox.getPoint3());
         values.put(KEY_POINT4, locationBox.getPoint4());
+        values.put(KEY_MODE, locationBox.getMode());
+        values.put(KEY_STATUS, locationBox.getStatus());
 
 
         db.insert(TABLE_LOCATIONBOX, null, values);
@@ -62,12 +66,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public LocationBox findOne(int id){
         SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor=db.query(TABLE_LOCATIONBOX, new String[]{KEY_ID,KEY_NAME,KEY_POINT1,KEY_POINT2,KEY_POINT3,KEY_POINT4},
+        Cursor cursor=db.query(TABLE_LOCATIONBOX, new String[]{KEY_ID,KEY_NAME,KEY_POINT1,KEY_POINT2,KEY_POINT3,KEY_POINT4,KEY_MODE,KEY_STATUS},
                 KEY_ID+"=?", new String[]{String.valueOf(id)}, null, null, null);
         if(cursor!=null){
             cursor.moveToFirst();
         }
-        return new LocationBox(Integer.parseInt(cursor.getString(0)),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5));
+        return new LocationBox(Integer.parseInt(cursor.getString(0)),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7));
     }
 
     public List<LocationBox> findAll(){
@@ -86,6 +90,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 locationBox.setPoint2(cursor.getString(3));
                 locationBox.setPoint3(cursor.getString(4));
                 locationBox.setPoint4(cursor.getString(5));
+                locationBox.setMode(cursor.getString(6));
+                locationBox.setStatus(cursor.getString(7));
                 listLocationBox.add(locationBox);
             }while(cursor.moveToNext());
         }
@@ -93,20 +99,44 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return listLocationBox;
     }
 
-    /* Yet to be implemented....
+    public List<LocationBox> locationBoxStatusON(){
+        List<LocationBox> listLocationBox=new ArrayList<LocationBox>();
+        String query="SELECT * FROM "+TABLE_LOCATIONBOX ;
+
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor=db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()){
+            do{if(cursor.getString(7).equalsIgnoreCase("ON")) {
+                LocationBox locationBox = new LocationBox();
+                locationBox.setId(Integer.valueOf(cursor.getString(0)));
+                locationBox.setName(cursor.getString(1));
+                locationBox.setPoint1(cursor.getString(2));
+                locationBox.setPoint2(cursor.getString(3));
+                locationBox.setPoint3(cursor.getString(4));
+                locationBox.setPoint4(cursor.getString(5));
+                locationBox.setMode(cursor.getString(6));
+                locationBox.setStatus(cursor.getString(7));
+                listLocationBox.add(locationBox);
+            }
+            }while(cursor.moveToNext());
+        }
+
+        return listLocationBox;
+    }
+
+
 
     public void update(LocationBox LocationBox){
         SQLiteDatabase db=this.getWritableDatabase();
 
         ContentValues values=new ContentValues();
-        values.put(KEY_NAME , LocationBox.getName());
-        values.put(KEY_COUNTRY, LocationBox.getCountry());
+        values.put(KEY_STATUS, LocationBox.getStatus());
 
-        db.update(TABLE_LocationBox, values, KEY_ID+"=?", new String[]{String.valueOf(LocationBox.getId())});
+        db.update(TABLE_LOCATIONBOX, values, KEY_ID+"=?", new String[]{String.valueOf(LocationBox.getId())});
         db.close();
     }
 
-    */
 
     public void delete(LocationBox LocationBox){
         SQLiteDatabase db=this.getWritableDatabase();
@@ -127,7 +157,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cur;
         try {
             SQLiteDatabase db=this.getReadableDatabase();
-            cur = db.query(TABLE_LOCATIONBOX, new String[] {KEY_ID, KEY_NAME, KEY_POINT1 },
+            cur = db.query(TABLE_LOCATIONBOX, new String[] {KEY_ID, KEY_NAME, KEY_MODE ,KEY_STATUS},
                     null, null, null, null, null);
             cur.moveToFirst();
             if (!cur.isAfterLast()) {
@@ -136,6 +166,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     dataList.add(cur.getString(0));
                     dataList.add(cur.getString(1));
                     dataList.add(cur.getString(2));
+                    dataList.add(cur.getString(3));
+
                     dataArray.add(dataList);
                 } while (cur.moveToNext());
 

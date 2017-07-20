@@ -1,4 +1,4 @@
-package com.fourstars.gosilent.gosilent;
+package com.fourstars.gosilent.gosilent.databaseanddao;
 
 import android.app.Application;
 
@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.LatLng;
 public class MyApplication extends Application {
 
     private LatLng myLocation;
+    private LocationBox myLocationBox;
 
     public LatLng getMyLocation() {
         return myLocation;
@@ -18,5 +19,13 @@ public class MyApplication extends Application {
 
     public void setMyLocation(LatLng myLocation) {
         this.myLocation = myLocation;
+    }
+
+    public LocationBox getMyLocationBox() {
+        return myLocationBox;
+    }
+
+    public void setMyLocationBox(LocationBox myLocationBox) {
+        this.myLocationBox = myLocationBox;
     }
 }

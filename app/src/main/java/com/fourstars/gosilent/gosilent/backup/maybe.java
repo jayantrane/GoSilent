@@ -1,63 +1,21 @@
-package com.fourstars.gosilent.gosilent;
+package com.fourstars.gosilent.gosilent.backup;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentSender;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+/**
+ * Created by Jayant on 18-07-2017.
+ */
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.CommonStatusCodes;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+public class maybe {
 
-import java.io.File;
-
-public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback /*,GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,LocationListener*/{
-
-    private Button mbutton;
-    private Button mbutton2;
-    private Button mbutton3;
-    private TextView mtextView;
-    private TextView mtextView2;
+   /* MainActivity implements ActivityCompat.OnRequestPermissionsResultCallback /*,GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,LocationListener
     private FusedLocationProviderClient mFusedLocationClient;
-   // public int REQUEST_CHECK_SETTINGS =1;
-   LocationRequest mLocationRequest;
-   final static int REQUEST_LOCATION = 1;
+    // public int REQUEST_CHECK_SETTINGS =1;
+    LocationRequest mLocationRequest;
+    final static int REQUEST_LOCATION = 1;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
+
+    DatabaseHandler databaseHandler;
 
     private boolean mPermissionDenied = false;
     private boolean mLocationEnabled = false;
@@ -68,55 +26,12 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
     private LocationCallback mLocationCallback;
 
-  /*  LocationRequest mLocationRequest;
-    GoogleApiClient mGoogleApiClient;
-    PendingResult<LocationSettingsResult> result;
-    final static int REQUEST_LOCATION = 1;*/
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        mbutton = (Button) findViewById(R.id.button);
-        mbutton2 = (Button) findViewById(R.id.button2);
-        mbutton3 = (Button) findViewById(R.id.button3);
-        mtextView = (TextView) findViewById(R.id.textView);
-        mtextView2 = (TextView) findViewById(R.id.textView2);
-
-
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        mbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(MainActivity.this, MyLocationActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-
-        mbutton2.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, PolygonActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        mbutton3.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(MainActivity.this, LocationBoxListActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-
+    *//*  LocationRequest mLocationRequest;
+      GoogleApiClient mGoogleApiClient;
+      PendingResult<LocationSettingsResult> result;
+      final static int REQUEST_LOCATION = 1;*//*
+    in create method
+    *//*
 
         mLocationCallback = new LocationCallback() {
             @Override
@@ -130,27 +45,32 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                 ((MyApplication) MainActivity.this.getApplication()).setMyLocation(temp);
 
 
-                /*for (Location location : locationResult.getLocations()) {
+                *//*
+*//*for (Location location : locationResult.getLocations()) {
                     // Update UI with location data
                     mtextView.setText("Lat : " + location.getLatitude() + " Lng : " + location.getLongitude());
-                }*/
+                }*//**//*
+
             };
         };
         enableMyLocation();
+*//*
 
-   /*     mGoogleApiClient = new GoogleApiClient.Builder(this)
+   *//*     mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).build();
         mGoogleApiClient.connect();
-*/
+*//*
 
 
 
     //    enableMyLocation();
 
-    }
-    protected void createLocationRequest() {
+
+    in rest
+
+*//*    protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000);
         mLocationRequest.setFastestInterval(5000);
@@ -160,13 +80,9 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     public void tasker(){
         createLocationRequest();
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest);
-        File file= getDatabasePath("LocationBoxDb");
-        Log.e("msg",file.toString() );
-// ...
+
         Log.e("msg","GPS and Location permissions will be requested.");
-
-
-        SettingsClient client = LocationServices.getSettingsClient(this);
+          SettingsClient client = LocationServices.getSettingsClient(this);
         Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
 
 
@@ -325,9 +241,9 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
     private void stopLocationUpdates() {
         mFusedLocationClient.removeLocationUpdates(mLocationCallback);
-    }
+    }*//*
 
- /*   @Override
+ *//*   @Override
     public void onConnected(Bundle bundle) {
 
         mLocationRequest = LocationRequest.create();
@@ -391,8 +307,6 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                 Log.e("msg","I am Location Listener");
     }
 
+*//*
 */
-
-
-
 }
