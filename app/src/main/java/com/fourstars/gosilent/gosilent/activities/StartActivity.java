@@ -64,8 +64,6 @@ public class StartActivity extends AppCompatActivity {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
 
-        Intent intent = new Intent(StartActivity.this,LocationService.class);
-        startService(intent);
 
         final Thread  welcomeThread = new Thread() {
 

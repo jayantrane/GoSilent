@@ -1,10 +1,15 @@
 package com.fourstars.gosilent.gosilent.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -13,6 +18,7 @@ import com.fourstars.gosilent.gosilent.databaseanddao.DatabaseHandler;
 import com.fourstars.gosilent.gosilent.databaseanddao.LocationBox;
 import com.fourstars.gosilent.gosilent.databaseanddao.MyApplication;
 import com.fourstars.gosilent.gosilent.R;
+import com.fourstars.gosilent.gosilent.services.LocationService;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -230,5 +236,50 @@ public class PolygonActivity extends AppCompatActivity
     @Override
     public void onMapLongClick(LatLng latLng) {
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_locationbox, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.help:
+                  help();
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    public void help(){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(PolygonActivity.this);
+        builder1.setMessage("Long press on 4 points to create an area ");
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+/*
+        builder1.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+*/
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 }

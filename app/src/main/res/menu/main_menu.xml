@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    <item android:id="@+id/runappinback"
+        android:title="Run app in background"
+        app:showAsAction="always"
+
+        />
+    <item android:id="@+id/shutdown"
+        android:title="Shut down"
+        />
+</menu>

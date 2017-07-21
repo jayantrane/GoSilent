@@ -45,6 +45,7 @@ public class LocationService extends Service {
         @Override
         public void onLocationChanged(Location location)
         {
+            Toast.makeText(LocationService.this,"Location changed",Toast.LENGTH_SHORT).show();
             AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
             Log.e(TAG, "onLocationChanged: " + location);
             mLastLocation.set(location);

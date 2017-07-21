@@ -41,14 +41,14 @@
                 android:text="Location List" />
         </TableRow>
 
-        <Button
+       <!-- <Button
             android:id="@+id/button7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/tableRow"
             android:layout_alignParentEnd="true"
             android:background="@android:color/holo_red_light"
-            android:text="Exit" />
+            android:text="Exit" />-->
 
 
     </RelativeLayout>
