@@ -3,6 +3,7 @@ package com.fourstars.gosilent.gosilent.activities;
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,7 +38,10 @@ public class LocationBoxListActivity extends AppCompatActivity{
     LocationChecker locationChecker;
     LatLng myLocation;
 
+    Parcelable state;
+
     private ListView listcontent = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +51,7 @@ public class LocationBoxListActivity extends AppCompatActivity{
         mAlLocationBox.clear();
         final DatabaseHandler databaseHandler=new DatabaseHandler(this);
         ArrayList<ArrayList<Object>> data =  databaseHandler.listIitems();
+        // Restore previous state (including selected item index and scroll position)
 
         for (int p = 0; p < data.size(); p++) {
             mLocationBox = new LocationBox();
@@ -65,7 +70,7 @@ public class LocationBoxListActivity extends AppCompatActivity{
             mLocationBox.setStatus(temp.get(3).toString());
             mAlLocationBox.add(mLocationBox);
         }
-        LocationBoxAdapter locationBoxAdapter = new LocationBoxAdapter(LocationBoxListActivity.this,mAlLocationBox);
+        final LocationBoxAdapter locationBoxAdapter = new LocationBoxAdapter(LocationBoxListActivity.this,mAlLocationBox);
         listcontent.setAdapter(locationBoxAdapter);
         listcontent.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -97,14 +102,22 @@ public class LocationBoxListActivity extends AppCompatActivity{
                     }
 
                     locationBox.setStatus("ON");
+                    Log.e("mlocation",locationBox.getName()+ " | "+locationBox.getPoint1()+ " | "+locationBox.getPoint2()+ " | "+locationBox.getPoint3()+ " | "+locationBox.getPoint4()+ " | "+locationBox.getStatus());
                     databaseHandler.update(locationBox);
+                    finish();
+                    startActivity(getIntent());
+                //    locationBoxAdapter.notifyDataSetChanged();
 
                 }else{
                     mradiogroup.check(R.id.radioButton6);
                     audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
                     locationBox.setStatus("OFF");
+                    Log.e("mlocation",locationBox.getName()+ " | "+locationBox.getPoint1()+ " | "+locationBox.getPoint2()+ " | "+locationBox.getPoint3()+ " | "+locationBox.getPoint4()+ " | "+locationBox.getStatus());
                     databaseHandler.update(locationBox);
                     Toast.makeText(LocationBoxListActivity.this, "Now Normal!!!",Toast.LENGTH_SHORT).show();
+                    finish();
+                    startActivity(getIntent());
+                   // locationBoxAdapter.notifyDataSetChanged();
                 }
 
 

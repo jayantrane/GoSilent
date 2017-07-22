@@ -134,6 +134,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_STATUS, LocationBox.getStatus());
 
         db.update(TABLE_LOCATIONBOX, values, KEY_ID+"=?", new String[]{String.valueOf(LocationBox.getId())});
+        Log.e("DatatbaseHandler","Box updated");
         db.close();
     }
 
