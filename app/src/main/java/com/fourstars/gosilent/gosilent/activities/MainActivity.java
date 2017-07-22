@@ -41,18 +41,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mbutton = (Button) findViewById(R.id.button);
+//        mbutton = (Button) findViewById(R.id.button);
         mbutton2 = (Button) findViewById(R.id.button2);
         mbutton3 = (Button) findViewById(R.id.button3);
         mtextView = (TextView) findViewById(R.id.textView6);
-        mbutton.setOnClickListener(new View.OnClickListener() {
+/*        mbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Intent intent = new Intent(MainActivity.this, MyLocationActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
 
 
@@ -87,13 +87,18 @@ public class MainActivity extends AppCompatActivity {
             myhome= ((MyApplication)getApplication()).getMyLocation();
             addresses = geocoder.getFromLocation(myhome.latitude,myhome.longitude,1);
             mtextView.setText(addresses.toString());
-            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-            String city = addresses.get(0).getLocality();
+            String address="" ;
+            /*= addresses.get(0).getAddressLine(0);*/
+            // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+/*            String city = addresses.get(0).getLocality();
             String state = addresses.get(0).getAdminArea();
             String country = addresses.get(0).getCountryName();
             String postalCode = addresses.get(0).getPostalCode();
-            String knownName = addresses.get(0).getFeatureName();
-            mtextView.setText(address +"\n"+state+"\n"+country);
+            String knownName = addresses.get(0).getFeatureName();*/
+            for(int i = 0; i <= addresses.get(0).getMaxAddressLineIndex(); i++) {
+                address=address.concat(addresses.get(0).getAddressLine(i)+"\n");
+            }
+            mtextView.setText(address);
             Log.e("Address",addresses.toString());
         } catch (IOException ioException) {
             // Catch network or other I/O problems.

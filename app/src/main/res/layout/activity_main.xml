@@ -53,26 +53,17 @@
 
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_weight="1"
-        android:text="Location" />
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/button"
-        android:layout_marginStart="29dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="68dp"
         android:text="You are at :-"
         android:textColor="@color/colorAccent"
-        android:textSize="25sp" />
+        android:textSize="25sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/textView6"

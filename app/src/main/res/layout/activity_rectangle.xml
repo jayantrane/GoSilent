@@ -14,12 +14,13 @@
             android:layout_height="match_parent" />
 
         <Button
-            android:text="Set Properties"
+            android:id="@+id/button6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/button6"
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/holo_green_light"
+            android:text=" Set Properties  "
             android:visibility="invisible" />
     </RelativeLayout>
 

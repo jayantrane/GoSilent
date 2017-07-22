@@ -54,9 +54,9 @@ public class StartActivity extends AppCompatActivity {
     private boolean mRequestingLocationUpdates=false;
     private LatLng myhome;
 
-    private GoogleMap mMap;
 
     private LocationCallback mLocationCallback;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +72,7 @@ public class StartActivity extends AppCompatActivity {
                 try {
                     super.run();
                     while(setLocation==false) {
+                        Log.e("Start","Location Start Accessing");
                         sleep(5000);
                         Log.e("Start","Location accessing");
               //          Toast.makeText(StartActivity.this,"Location Accesed",Toast.LENGTH_SHORT).show();
@@ -99,11 +100,8 @@ public class StartActivity extends AppCompatActivity {
                 ((MyApplication) StartActivity.this.getApplication()).setMyLocation(myhome);
                 welcomeThread.start();
 
-                /*for (Location location : locationResult.getLocations()) {
-                    // Update UI with location data
-                    mtextView.setText("Lat : " + location.getLatitude() + " Lng : " + location.getLongitude());
-                }*/
-            };
+
+            }
         };
         enableMyLocation();
     }
@@ -117,9 +115,7 @@ public class StartActivity extends AppCompatActivity {
     public void tasker(){
         createLocationRequest();
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest);
-        File file= getDatabasePath("LocationBoxDb");
-        Log.e("msg",file.toString() );
-// ...
+
         Log.e("msg","GPS and Location permissions will be requested.");
 
 
@@ -194,7 +190,7 @@ public class StartActivity extends AppCompatActivity {
                             public void onSuccess(Location location) {
                                 if (location != null) {
                                     //   mtextView.setText("Lat : " + location.getLatitude() + " Lng : " + location.getLongitude());
-
+                                    Log.e("msg","FusedLocationClient location is not null.");
                                 }
                                 else{
                                     Log.e("msg","FusedLocationClient location is null.");

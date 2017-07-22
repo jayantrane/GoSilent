@@ -10,11 +10,11 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="300px"
-            android:layout_height="300px"
+            android:layout_width="150sp"
+            android:layout_height="200sp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="75dp"
+            android:layout_marginTop="34dp"
             app:srcCompat="@mipmap/app_logo" />
 
         <TextView
@@ -32,9 +32,9 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="75dp"
             android:layout_below="@+id/imageView"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="45dp" />
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 </LinearLayout>

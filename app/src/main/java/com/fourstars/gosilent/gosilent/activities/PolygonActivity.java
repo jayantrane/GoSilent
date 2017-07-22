@@ -24,6 +24,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
@@ -39,7 +40,7 @@ import java.util.List;
 public class PolygonActivity extends AppCompatActivity
         implements  GoogleMap.OnMyLocationButtonClickListener,OnMapReadyCallback ,GoogleMap.OnMapLongClickListener{
 
-    private /*static final*/ LatLng mLocation /*= new LatLng(-20, 130)*/;
+    private  LatLng mLocation ;
     private LatLng[] myBox;
 
     private Button mbutton6;
@@ -135,7 +136,8 @@ public class PolygonActivity extends AppCompatActivity
                 count++;
                 Toast.makeText(PolygonActivity.this,"Point "+count+" has been Set.",Toast.LENGTH_SHORT).show();
                 Log.e("msg","Point"+count+" has been Set.");
-                mMap.addMarker(new MarkerOptions().position(point).title(count+". Point"));
+                mMap.addMarker(new MarkerOptions().position(point).title(count+". Point").icon(BitmapDescriptorFactory
+                        .defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
                 if(count==4){
                     Toast.makeText(PolygonActivity.this,"All points are Set.",Toast.LENGTH_SHORT).show();
                     Log.e("msg","All points are Set.");
@@ -269,15 +271,7 @@ public class PolygonActivity extends AppCompatActivity
                     }
                 });
 
-/*
-        builder1.setNegativeButton(
-                "No",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-*/
+
 
         AlertDialog alert11 = builder1.create();
         alert11.show();
